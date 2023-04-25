@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   distDir: 'docs',
   output: 'export',
-  assetPrefix: './'
+  assetPrefix: '/ATL-NVL'
 }
 
 module.exports = nextConfig
