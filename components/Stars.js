@@ -4,8 +4,8 @@ function Stars({type,category,index}) {
   const [score, setScore] = useState(0);
 
   return (
-    <div class="flex items-center justify-evenly	">
-        <input value={score} name={`${[type,index].join("_")}`} className="hidden"/>
+    <div className="flex items-center justify-evenly	">
+        <input value={score} readOnly name={`${[type,index].join("_")}`} className="hidden"/>
       {[0, 1, 2, 3, 4].map((_score) => {
         const color =
           score >= _score
@@ -14,8 +14,9 @@ function Stars({type,category,index}) {
 
         return (
           <svg
+          key={_score}
             aria-hidden="true"
-            class={`w-5 h-5 flex-1 cursor-pointer ${color}`}
+            className={`w-5 h-5 flex-1 cursor-pointer ${color}`}
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"

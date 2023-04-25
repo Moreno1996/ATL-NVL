@@ -31,6 +31,7 @@ const atl_questions = [
   { question: "Stijfheid van het lichaam ", category: "difficulty_moving" },
 ];
 export const ATL = {
+  name: "ATL",
   questions: atl_questions,
   categories: atl_categories,
 };

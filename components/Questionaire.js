@@ -1,18 +1,59 @@
-import { useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import Stars from "./Stars";
+import { validateRequirement } from "@/utils";
 
 const Answers = ["Nooit", "Zelden", "Soms", "Vaak", "Zeer vaak"];
 function Questionaire({ questionaire }) {
-  const questions = questionaire?.questions;
-  const categories = questionaire?.categories;
+  const { questions, categories, total_range } = questionaire;
   const [summary, setSummary] = useState(null);
-  function submitForm(e) {
-    e.preventDefault();
-    const form = e.target;
+  const formRef = useRef(null);
+  const [mailLink, setMailLink] = useState(null);
+  function displayScore() {
+    const { total, categories, questions } = calculateScore();
+    emailScore({ total, categories, questions });
+    setSummary(
+      <div className="grid grid-cols-2">
+        {categories.map((cat, index) => (
+          <Fragment key={index}>
+            <div>{cat?.category}:</div>
+            <div>{cat?.score}</div>
+          </Fragment>
+        ))}
+        <div className="font-medium">Totaal:</div>
+        <div className="font-medium">
+          {total.score} - {total?.text_score}
+        </div>
+      </div>
+    );
+  }
+  function emailScore(data) {
+    const { total, categories, questions } = data;
+    const target_email = "moreno.van.rooijen@gmail.com";
+    var subject = `${questionaire.name} - `;
+    var body = "";
+    body += `Vragen \n`;
+    for (const question of questions) {
+      body += `${question.question}: ${question.score} \n`;
+    }
+    body += `\n`;
+    body += `Categorieën \n`;
+    for (const question of categories) {
+      body += `${question.category}: ${question.score} \n`;
+    }
+    body += `\n`;
+    body += `Totaal: ${total.score} - ${total?.text_score} \n`;
+    var uri = `mailto:${target_email}?subject=`;
+    uri += encodeURIComponent(subject);
+    uri += "&body=";
+    uri += encodeURIComponent(body);
+    console.log(uri);
+    setMailLink(uri);
+  }
+  function calculateScore() {
+    const form = formRef.current;
     const formData = new FormData(form);
     const formDataObj = Object.fromEntries(formData.entries());
-    console.log("formDataObj", formDataObj);
-    let total = 0;
+    let total_score = 0;
     const _categories = {};
     const questions_with_score = [];
     for (const [key, value] of Object.entries(formDataObj)) {
@@ -20,7 +61,7 @@ function Questionaire({ questionaire }) {
       const question = questions[index];
       const question_cat = question?.category;
       const score = parseInt(value);
-      total += score;
+      total_score += score;
       if (!_categories[question_cat]) {
         _categories[question_cat] = 0;
       }
@@ -32,53 +73,70 @@ function Questionaire({ questionaire }) {
         if (!categories[key]) {
           return;
         }
+
         return { category: categories[key]?.name, score: score };
       })
       .filter((n) => n);
-    console.log({ total, _readable_categories, questions_with_score });
-    setSummary(
-      <div className="grid grid-cols-2">
-        {_readable_categories.map((cat) => (
-          <>
-            <div>{cat?.category}:</div>
-            <div>{cat?.score}</div>
-          </>
-        ))}
-        <div className="font-medium">Totaal:</div>
-        <div  className="font-medium">{total}</div>
-      </div>
-    );
+    const [score, text_score] = total_range ? Object.entries(total_range).find(
+      ([range, text]) => validateRequirement(total_score, range)
+    ) : [];
+    console.log("score", score);
+    const total = { score: total_score, text_score };
+    return {
+      total,
+      categories: _readable_categories,
+      questions: questions_with_score,
+    };
   }
   return (
-    <div>
-    <form onSubmit={submitForm}>
-      <div className="grid grid-cols-2 rounded">
-        <div className="bg-gray-200 p-4 rounded-l font-medium text-sm md:text-md">
-          Vraag
+    <div className="flex flex-col gap-4">
+      <form ref={formRef}>
+        <div className="grid grid-cols-2 rounded">
+          <div className="p-4 text-sm font-medium bg-gray-200 rounded-l md:text-md">
+            Vraag
+          </div>
+          <div className="flex flex-row items-center text-xs font-medium bg-gray-200 rounded-r md:text-md">
+            {Answers.map((answer, index) => (
+              <div key={index} className="flex-1 text-center ">
+                {answer}
+              </div>
+            ))}
+          </div>
+          {questions.map((question, index) => {
+            return (
+              <Fragment key={index}>
+                <div className="p-4">{question?.question}</div>
+                <Stars
+                  index={index}
+                  category={question?.category}
+                  type={"atl"}
+                />
+              </Fragment>
+            );
+          })}
         </div>
-        <div className="flex flex-row items-center bg-gray-200 font-medium text-xs md:text-md rounded-r">
-          {Answers.map((answer) => (
-            <div className="flex-1 text-center	">{answer}</div>
-          ))}
-        </div>
-        {questions.map((question, index) => {
-          return (
-            <>
-              <div className="p-4">{question?.question}</div>
-              <Stars index={index} category={question?.category} type={"atl"} />
-            </>
-          );
-        })}
-
+      </form>
+      <div className="flex flex-row gap-3 px-4">
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          type="submit"
+          className="px-4 py-2 font-bold text-white rounded bg-slate-500 hover:bg-slate-700"
+          onClick={(e) => {
+            e.preventDefault();
+            displayScore();
+          }}
         >
-          Opslaan
+          Scores berekenen
         </button>
+        {mailLink && (
+          <a
+            href={mailLink}
+            className="px-4 py-2 font-bold text-white rounded bg-slate-500 hover:bg-slate-700"
+          >
+            Email
+          </a>
+        )}
       </div>
-    </form>
-    {summary}</div>
+      <div className="px-4">{summary}</div>
+    </div>
   );
 }
 
