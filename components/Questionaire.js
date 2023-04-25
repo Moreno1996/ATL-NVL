@@ -46,7 +46,6 @@ function Questionaire({ questionaire }) {
     uri += encodeURIComponent(subject);
     uri += "&body=";
     uri += encodeURIComponent(body);
-    console.log(uri);
     setMailLink(uri);
   }
   function calculateScore() {
@@ -80,7 +79,6 @@ function Questionaire({ questionaire }) {
     const [score, text_score] = total_range ? Object.entries(total_range).find(
       ([range, text]) => validateRequirement(total_score, range)
     ) : [];
-    console.log("score", score);
     const total = { score: total_score, text_score };
     return {
       total,
