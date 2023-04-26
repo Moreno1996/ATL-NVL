@@ -8,6 +8,9 @@ const nvl_categories = {
   dyspneu: {
     name: "Dyspneu of subjectieve adembelemmering",
   },
+  tension: {
+    name: "Spanning",
+  },
 };
 const nvl_total_range={
   "< 13":"Normale score",
@@ -16,8 +19,8 @@ const nvl_total_range={
   ">= 30":"Sterk verhoogd",
 }
 const nvl_questions = [
-  { question: "Pijnlijke steken in de borst", category: "unknown" },
-  { question: "Gespannenheid", category: "unknown" },
+  { question: "Pijnlijke steken in de borst", category: "tension" },
+  { question: "Gespannenheid", category: "tension" },
   { question: "Een waas voor de ogen", category: "central" },
   { question: "Duizeligheid", category: "central" },
   { question: "In de war zijn, of het gevoel hebben het normale contact met de omgeving te verliezen", category: "central" },
@@ -30,8 +33,8 @@ const nvl_questions = [
   { question: "Stijfheid van vingers of armen", category: "perifere" },
   { question: "Stijfheid rond de mond", category: "perifere" },
   { question: "Koude handen of voeten", category: "perifere" },
-  { question: "Bonzen van het hart", category: "unknown" },
-  { question: "Angstig gevoel", category: "unknown" },
+  { question: "Bonzen van het hart", category: "tension" },
+  { question: "Angstig gevoel", category: "tension" },
 ];
 export const NVL = {
   name: "NVL",

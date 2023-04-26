@@ -1,13 +1,17 @@
 import { Fragment, useRef, useState } from "react";
 import Stars from "./Stars";
 import { validateRequirement } from "@/utils";
+import useLocalStorage from "@/utils/useLocalStorage";
 
 const Answers = ["Nooit", "Zelden", "Soms", "Vaak", "Zeer vaak"];
 function Questionaire({ questionaire }) {
   const { questions, categories, total_range } = questionaire;
   const [summary, setSummary] = useState(null);
   const formRef = useRef(null);
+  const summaryRef = useRef(null);
   const [mailLink, setMailLink] = useState(null);
+  const [email, ]= useLocalStorage("moreno_email","");
+
   function displayScore() {
     const { total, categories, questions } = calculateScore();
     emailScore({ total, categories, questions });
@@ -25,10 +29,14 @@ function Questionaire({ questionaire }) {
         </div>
       </div>
     );
+    setTimeout(()=>{
+      summaryRef.current.scrollIntoView()
+    },50)
+
   }
   function emailScore(data) {
     const { total, categories, questions } = data;
-    const target_email = "moreno.van.rooijen@gmail.com";
+    const target_email = email;
     var subject = `${questionaire.name} - `;
     var body = "";
     body += `Vragen \n`;
@@ -55,6 +63,9 @@ function Questionaire({ questionaire }) {
     let total_score = 0;
     const _categories = {};
     const questions_with_score = [];
+    for(const cat of Object.keys(categories)){
+      _categories[cat]=0;
+    }
     for (const [key, value] of Object.entries(formDataObj)) {
       const index = key.split("_")[1];
       const question = questions[index];
@@ -114,7 +125,8 @@ function Questionaire({ questionaire }) {
           })}
         </div>
       </form>
-      <div className="flex flex-row gap-3 px-4">
+      <hr/> 
+      <div className="flex flex-row gap-3 px-4 mt-8">
         <button
           className="px-4 py-2 font-bold text-white rounded bg-slate-500 hover:bg-slate-700"
           onClick={(e) => {
@@ -133,7 +145,10 @@ function Questionaire({ questionaire }) {
           </a>
         )}
       </div>
-      <div className="px-4">{summary}</div>
+      <div ref={summaryRef}>
+
+      {summary && <div className="block p-4 mx-4 bg-white border border-gray-200 rounded-lg">{summary}</div>}
+      </div>
     </div>
   );
 }
