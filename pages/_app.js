@@ -11,10 +11,15 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   const is_home = router?.pathname == "/"
   const [ modalOpen, setModalOpen ] = useState(false);
+  const page_name =router?.asPath.replace("/","");
   return (
     <div>
       <div className="flex flex-row justify-between p-4 text-white bg-slate-700">
-        <Link href="/">{ is_home? <FaHome /> : <BiArrowBack />}</Link>
+        <div className="flex flex-row items-center gap-4">
+
+        <Link href="/" className="h-fit">{ is_home? <FaHome /> : <BiArrowBack />}</Link>
+        {!is_home && page_name}
+        </div>
         {is_home && <MdSettings onClick={()=>{setModalOpen(true)}}/>}
         
       </div>
