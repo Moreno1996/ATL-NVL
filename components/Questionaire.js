@@ -101,10 +101,10 @@ function Questionaire({ questionaire }) {
     <div className="flex flex-col gap-4">
       <form ref={formRef}>
         <div className="grid grid-cols-2 rounded">
-          <div className="p-4 text-sm font-medium bg-gray-200 rounded-l md:text-md">
+          <div className="sticky top-0 p-4 text-sm font-medium bg-gray-200 rounded-l md:text-md">
             Vraag
           </div>
-          <div className="flex flex-row items-center text-xs font-medium bg-gray-200 rounded-r md:text-md">
+          <div className="sticky top-0 flex flex-row items-center text-xs font-medium bg-gray-200 rounded-r md:text-md">
             {Answers.map((answer, index) => (
               <div key={index} className="flex-1 text-center ">
                 {answer}
