@@ -1,4 +1,4 @@
-const is_build = true;
+const is_build = false;
 
 let assetPrefix = '';
 let basePath = '';
