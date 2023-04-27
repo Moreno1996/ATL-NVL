@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "npm run build && echo \"\" > ./docs/.nojekyll "
+    "deploy": "npm run build && echo \"\" > ./docs/.nojekyll --env NODE_BUILD=build"
 
   },
   "dependencies": {
