@@ -4,6 +4,16 @@ import { validateRequirement } from "@/utils";
 import useLocalStorage from "@/utils/useLocalStorage";
 import styles from "./Questionaire.module.scss";
 const Answers = ["Nooit", "Zelden", "Soms", "Vaak", "Zeer vaak"];
+
+function findMatchingScore(range,score){
+  const [, text_score] = range
+  ? Object.entries(range).find(([_range, text]) =>
+      validateRequirement(score, _range)
+    )
+  : [];
+  return text_score;
+}
+
 function Questionaire({ questionaire }) {
   const { questions, categories, total_range } = questionaire;
   const [summary, setSummary] = useState(null);
@@ -28,7 +38,7 @@ function Questionaire({ questionaire }) {
         {categories.map((cat, index) => (
           <Fragment key={index}>
             <div>{cat?.category}:</div>
-            <div>{cat?.score}</div>
+            <div>{cat?.score} - {cat?.text_score}</div>
           </Fragment>
         ))}
         <div className="font-medium">Totaal:</div>
@@ -54,7 +64,7 @@ function Questionaire({ questionaire }) {
     body += `\n`;
     body += `Categorieën \n`;
     for (const question of categories) {
-      body += `${question.category}: ${question.score} \n`;
+      body += `${question.category}: ${question.score} - ${question?.text_score}\n`;
     }
     body += `\n`;
     body += `Totaal: ${total.score} - ${total?.text_score} \n`;
@@ -91,18 +101,16 @@ function Questionaire({ questionaire }) {
     }
     const _readable_categories = Object.entries(_categories)
       .map(([key, score]) => {
-        if (!categories[key]) {
+        const cat = categories[key];
+        if (!cat) {
           return;
         }
+        const text_score = findMatchingScore(cat?.ranges,score);
 
-        return { category: categories[key]?.name, score: score };
+        return { category: cat?.name, score: score ,text_score};
       })
       .filter((n) => n);
-    const [score, text_score] = total_range
-      ? Object.entries(total_range).find(([range, text]) =>
-          validateRequirement(total_score, range)
-        )
-      : [];
+    const text_score = findMatchingScore(total_range,total_score);
     const total = { score: total_score, text_score };
     return {
       total,

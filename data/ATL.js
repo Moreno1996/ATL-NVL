@@ -1,14 +1,35 @@
 const atl_categories = {
   difficulty_moving: {
     name: "Moeilijk bewegen",
+    ranges: {
+      "< 7":"Goed",
+      "< 8":"Gelijk",
+      ">= 8":"Verhoogd",
+    }
   },
   exhausted: {
     name: "Vermoeid",
+    ranges: {
+      "< 9":"Goed",
+      "< 10":"Gelijk",
+      ">= 10":"Verhoogd",
+    }
   },
   mental_distress: {
     name: "Mentale onrust",
+    ranges: {
+      "< 7":"Goed",
+      "< 8":"Gelijk",
+      ">= 8":"Verhoogd",
+    }
   },
 };
+const atl_total_range={
+  "< 19":"Goed",
+  "< 28":"Normaal tot hoog",
+  "< 31":"Licht verhoogd",
+  ">= 31":"Sterk verhoogd",
+}
 const atl_questions = [
   { question: "Vermoeid gevoel", category: "exhausted" },
   { question: " Moe wakker worden", category: "exhausted" },
@@ -34,4 +55,6 @@ export const ATL = {
   name: "ATL",
   questions: atl_questions,
   categories: atl_categories,
+  total_range:atl_total_range
+
 };

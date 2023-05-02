@@ -1,15 +1,35 @@
 const nvl_categories = {
   central: {
-    name: "Centrale krachten",
+    name: "Centrale klachten",
+    ranges: {
+      "< 4":"Goed",
+      "< 5":"Gelijk",
+      ">= 5":"Verhoogd",
+    }
   },
   perifere: {
     name: "Perifere klachten",
+    ranges: {
+      "< 5":"Goed",
+      "< 6":"Gelijk",
+      ">= 6":"Verhoogd",
+    }
   },
   dyspneu: {
     name: "Dyspneu of subjectieve adembelemmering",
+    ranges: {
+      "< 5":"Goed",
+      "< 6":"Gelijk",
+      ">= 6":"Verhoogd",
+    }
   },
   tension: {
     name: "Spanning",
+    ranges: {
+      "< 5":"Goed",
+      "< 6":"Gelijk",
+      ">= 6":"Verhoogd",
+    }
   },
 };
 const nvl_total_range={
