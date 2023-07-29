@@ -1,34 +1,34 @@
 const atl_categories = {
   difficulty_moving: {
-    name: "Moeilijk bewegen",
+    name: "Moeite met bewegen",
     ranges: {
-      "< 7":"Goed",
-      "< 8":"Gelijk",
-      ">= 8":"Verhoogd",
+      "< 7":{text:"Goed",color:"green"},
+      "< 8":{text:"Gelijk",color:"orange"},
+      ">= 8":{text:"Verhoogd",color:"red"},
     }
   },
   exhausted: {
-    name: "Vermoeid",
+    name: "Moe",
     ranges: {
-      "< 9":"Goed",
-      "< 10":"Gelijk",
-      ">= 10":"Verhoogd",
+      "< 9":{text:"Goed",color:"green"},
+      "< 10":{text:"Gelijk",color:"orange"},
+      ">= 10":{text:"Verhoogd",color:"red"},
     }
   },
   mental_distress: {
     name: "Mentale onrust",
     ranges: {
-      "< 7":"Goed",
-      "< 8":"Gelijk",
-      ">= 8":"Verhoogd",
+      "< 7":{text:"Goed",color:"green"},
+      "< 8":{text:"Gelijk",color:"orange"},
+      ">= 8":{text:"Verhoogd",color:"red"},
     }
   },
 };
 const atl_total_range={
-  "< 19":"Goed",
-  "< 28":"Normaal tot hoog",
-  "< 31":"Licht verhoogd",
-  ">= 31":"Sterk verhoogd",
+  "< 19":{text:"Goed",color:"green"},
+  "< 28":{text:"Hoognormaal",color:"orange"},
+  "< 31":{text:"Licht verhoogd",color:"red"},
+  ">= 31":{text:"Sterk verhoogd",color:"purple"},
 }
 const atl_questions = [
   { question: "Vermoeid gevoel", category: "exhausted" },

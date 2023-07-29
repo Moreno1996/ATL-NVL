@@ -1,42 +1,42 @@
 const nvl_categories = {
-  central: {
-    name: "Centrale klachten",
+  dyspneu: {
+    name: "Dyspneu",
     ranges: {
-      "< 4":"Goed",
-      "< 5":"Gelijk",
-      ">= 5":"Verhoogd",
+      "< 5":{text:"Goed",color:"green"},
+      "< 6":{text:"Gelijk",color:"orange"},
+      ">= 6":{text:"Verhoogd",color:"red"},
     }
   },
   perifere: {
-    name: "Perifere klachten",
+    name: "Perifeer",
     ranges: {
-      "< 5":"Goed",
-      "< 6":"Gelijk",
-      ">= 6":"Verhoogd",
+      "< 5":{text:"Goed",color:"green"},
+      "< 6":{text:"Gelijk",color:"orange"},
+      ">= 6":{text:"Verhoogd",color:"red"},
     }
   },
-  dyspneu: {
-    name: "Dyspneu of subjectieve adembelemmering",
+  central: {
+    name: "Centraal",
     ranges: {
-      "< 5":"Goed",
-      "< 6":"Gelijk",
-      ">= 6":"Verhoogd",
+      "< 4":{text:"Goed",color:"green"},
+      "< 5":{text:"Gelijk",color:"orange"},
+      ">= 5":{text:"Verhoogd",color:"red"},
     }
   },
   tension: {
-    name: "Spanning",
+    name: "Angst / Spanning",
     ranges: {
-      "< 5":"Goed",
-      "< 6":"Gelijk",
-      ">= 6":"Verhoogd",
+      "< 5":{text:"Goed",color:"green"},
+      "< 6":{text:"Gelijk",color:"orange"},
+      ">= 6":{text:"Verhoogd",color:"red"},
     }
   },
 };
 const nvl_total_range={
-  "< 13":"Normale score",
-  "< 20":"Normaal tot hoog",
-  "< 29":"Licht verhoogd",
-  ">= 30":"Sterk verhoogd",
+  "< 13":{text:"Goed",color:"green"},
+  "< 20":{text:"Hoognormaal",color:"#c7cd72"},
+  "< 30":{text:"Licht verhoogd",color:"#f7b96a"},
+  ">= 30":{text:"Sterk verhoogd",color:"red"},
 }
 const nvl_questions = [
   { question: "Pijnlijke steken in de borst", category: "tension" },

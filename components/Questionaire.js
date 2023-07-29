@@ -3,7 +3,7 @@ import Stars from "./Stars";
 import { validateRequirement } from "@/utils";
 import useLocalStorage from "@/utils/useLocalStorage";
 import styles from "./Questionaire.module.scss";
-const Answers = ["Nooit", "Zelden", "Soms", "Vaak", "Zeer vaak"];
+import {answers} from "./constants.js";
 
 function findMatchingScore(range,score){
   const [, text_score] = range
@@ -31,18 +31,18 @@ function Questionaire({ questionaire }) {
       
       setWarning(<div>Vraag {error} is niet ingevuld</div>)
     }else{
-
+      console.log("categories",categories)
       emailScore({ total, categories, questions });
       setSummary(
         <div className="grid grid-cols-2">
         {categories.map((cat, index) => (
           <Fragment key={index}>
             <div>{cat?.category}:</div>
-            <div>{cat?.score} - {cat?.text_score}</div>
+            <div style={{color: cat?.color || "black", fontWeight:"bold"}}>{cat?.score} - {cat?.text_score}</div>
           </Fragment>
         ))}
         <div className="font-medium">Totaal:</div>
-        <div className="font-medium">
+        <div className="font-medium" style={{color: total?.color || "black", fontWeight:"bold"}}>
           {total.score} - {total?.text_score}
         </div>
       </div>
@@ -52,22 +52,34 @@ function Questionaire({ questionaire }) {
       summaryRef.current.scrollIntoView();
     }, 50);
   }
+  function today(){
+    const today = new Date();
+const yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+
+if (dd < 10) {dd = '0' + dd;}
+if (mm < 10) {mm = '0' + mm;}
+
+return `${dd}-${mm}-${yyyy}`;
+  }
   function emailScore(data) {
     const { total, categories, questions } = data;
     const target_email = email;
     var subject = `${questionaire.name} - `;
     var body = "";
-    body += `Vragen \n`;
-    for (const question of questions) {
-      body += `${question.question}: ${question.score} \n`;
-    }
-    body += `\n`;
-    body += `Categorieën \n`;
+    body += `${questionaire.name}, Ingevuld op ${today()}, `;
+    body += `Totaal: ${total?.text_score} (${total.score}), `;
     for (const question of categories) {
-      body += `${question.category}: ${question.score} - ${question?.text_score}\n`;
+      body += `${question.category}: ${question?.text_score} (${question.score}), `;
     }
     body += `\n`;
-    body += `Totaal: ${total.score} - ${total?.text_score} \n`;
+    body += `Vragen \n`;
+    let i = 1;
+    for (const question of questions) {
+      body += `${i}. ${question.question}: ${answers[question.score]} (${question.score}) \n`;
+      i = i + 1;
+    }
     var uri = `mailto:${target_email}?subject=`;
     uri += encodeURIComponent(subject);
     uri += "&body=";
@@ -105,13 +117,13 @@ function Questionaire({ questionaire }) {
         if (!cat) {
           return;
         }
-        const text_score = findMatchingScore(cat?.ranges,score);
+        const {text, color} = findMatchingScore(cat?.ranges,score);
 
-        return { category: cat?.name, score: score ,text_score};
+        return { category: cat?.name, score: score ,text_score:text, color};
       })
       .filter((n) => n);
-    const text_score = findMatchingScore(total_range,total_score);
-    const total = { score: total_score, text_score };
+    const {text, color} = findMatchingScore(total_range,total_score);
+    const total = { score: total_score, text_score:text, color };
     return {
       total,
       categories: _readable_categories,
@@ -129,7 +141,7 @@ function Questionaire({ questionaire }) {
             Vraag
           </div>
           <div className="sticky top-0 flex flex-row items-center text-xs font-medium text-white rounded-r bg-slate-500 md:text-md">
-            {Answers.map((answer, index) => (
+            {answers.map((answer, index) => (
               <div key={index} className="flex-1 text-center ">
                 {answer}
               </div>
@@ -163,6 +175,7 @@ function Questionaire({ questionaire }) {
         {mailLink && (
           <a
             href={mailLink}
+            target="_blank"
             className="px-4 py-2 font-bold text-white rounded bg-slate-500 hover:bg-slate-700"
           >
             Email
