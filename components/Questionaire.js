@@ -137,10 +137,10 @@ return `${dd}-${mm}-${yyyy}`;
           className={styles.grid + " grid rounded"}
           style={{ gridTemplateColumns: "minmax(50%,auto) minmax(50%,1fr)" }}
         >
-          <div className="sticky top-0 p-4 text-sm font-medium text-white rounded-l bg-slate-500 md:text-md">
+          <div className="sticky top-0 z-10 p-4 text-sm font-medium text-white rounded-l bg-slate-500 md:text-md">
             Vraag
           </div>
-          <div className="sticky top-0 flex flex-row items-center text-xs font-medium text-white rounded-r bg-slate-500 md:text-md">
+          <div className="sticky top-0 z-10 flex flex-row items-center text-xs font-medium text-white rounded-r bg-slate-500 md:text-md">
             {answers.map((answer, index) => (
               <div key={index} className="flex-1 text-center ">
                 {answer}
